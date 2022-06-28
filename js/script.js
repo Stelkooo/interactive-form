@@ -1,6 +1,7 @@
 /*
     When page loads, the name input field is selected by default
     otherJobRole txt field is set to not display
+    disable the color select field from get go
 */
 function pageLoad() {
     nameField.focus();
@@ -29,3 +30,4 @@ userTitle.addEventListener("change", () => {
         otherJobRole.style.display = "none";
     }
 });
+
