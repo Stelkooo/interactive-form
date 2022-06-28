@@ -13,7 +13,9 @@ let bodyHTML = document.getElementsByTagName("body")[0];
 let nameField = document.getElementById("name");
 let userTitle = document.getElementById("title");
 let otherJobRole = document.getElementById("other-job-role");
+let shirtDesigns = document.getElementById("design");
 let colorSelect = document.getElementById("color");
+let colorOptions = document.querySelectorAll("#color option");
 
 bodyHTML.addEventListener(
     "load",
@@ -31,3 +33,28 @@ userTitle.addEventListener("change", () => {
     }
 });
 
+/*
+    listens for changes in selection of shirt designs
+    depending on design selected, only colors specific to that design will display
+*/
+shirtDesigns.addEventListener("change", () => {
+    function colorOptionsHide(theme) {
+        colorOptions.forEach((e) => {
+            if (e.dataset.theme === theme) {
+                e.hidden = false;
+            } else {
+                e.hidden = true;
+            }
+        }) 
+    };
+
+    colorSelect.disabled = false;
+    switch (shirtDesigns.value) {
+        case "js puns":
+            colorOptionsHide("js puns");
+            break;
+        case "heart js":
+            colorOptionsHide("heart js"); 
+            break;
+    }
+});
