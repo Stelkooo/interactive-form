@@ -5,12 +5,14 @@
 function pageLoad() {
     nameField.focus();
     otherJobRole.style.display = "none";
-}
+    colorSelect.disabled = true;
+};
 
 let bodyHTML = document.getElementsByTagName("body")[0];
 let nameField = document.getElementById("name");
 let userTitle = document.getElementById("title");
 let otherJobRole = document.getElementById("other-job-role");
+let colorSelect = document.getElementById("color");
 
 bodyHTML.addEventListener(
     "load",
