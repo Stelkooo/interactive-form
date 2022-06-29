@@ -2,6 +2,7 @@
     When page loads, the name input field is selected by default
     otherJobRole txt field is set to not display
     disable the color select field from get go
+    set userpayment to credit-card and only display credit card
 */
 function pageLoad() {
     nameField.focus();
@@ -10,7 +11,10 @@ function pageLoad() {
     userPayment.value = "credit-card";
     paymentSelection("credit-card")
 };
-
+/*
+    takes in payment param which contains the payment option the user has selected
+    hides the options which were not selected
+*/
 function paymentSelection(payment) {
     let paymentOptions = {
         "credit-card": document.getElementById("credit-card"),
@@ -80,7 +84,11 @@ shirtDesigns.addEventListener("change", () => {
             break;
     }
 });
-
+/*
+    listens for changes in the activities checkbox
+    if a checkbox is selected, its cost is added to the total
+    if a checkbox is unselected, its cost is removed
+*/
 activities.addEventListener("change", (e) => {
     if (e.target.checked === true) {
         totalCost += parseInt(e.target.dataset.cost);
@@ -89,7 +97,10 @@ activities.addEventListener("change", (e) => {
     }
     activitiesCost.innerHTML = `Total: $${totalCost}`;
 });
-
+/*
+    listens for a change in the user payment select box
+    calls the paymentSelection function with the payment selected
+*/
 userPayment.addEventListener("change", (e) => {
     paymentSelection(e.target.value);
 });
