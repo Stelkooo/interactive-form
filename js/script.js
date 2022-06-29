@@ -107,7 +107,12 @@ activities.addEventListener("change", (e) => {
 userPayment.addEventListener("change", (e) => {
     paymentSelection(e.target.value);
 });
-
+/*
+    when form gets submitted it checks required fields
+    if required field is not correctly filled in, it add 1 to totalInvalid
+    if totalInvalid is eq to 0 at the end of checks it will submit the form
+    otherwise if totalInvalid is greater than 0 it will not submit the form
+*/
 form.addEventListener("submit", (e) => {
     let totalInvalid = 0;
     function regExTest(regEx, stringToTest) {
