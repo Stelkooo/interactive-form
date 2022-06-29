@@ -42,6 +42,9 @@ let activities = document.getElementById("activities");
 let activitiesCost = document.getElementById("activities-cost");
 let totalCost = 0;
 let userPayment = document.getElementById("payment");
+let form = document.getElementsByTagName("form")[0];
+let email = document.getElementById("email");
+let activitiesCheckboxes = document.querySelectorAll('.activities input[type="checkbox"]');
 
 bodyHTML.addEventListener(
     "load",
@@ -103,4 +106,54 @@ activities.addEventListener("change", (e) => {
 */
 userPayment.addEventListener("change", (e) => {
     paymentSelection(e.target.value);
+});
+
+form.addEventListener("submit", (e) => {
+    let totalInvalid = 0;
+    function regExTest(regEx, stringToTest) {
+        if (!regEx.text(stringToTest)) {
+            totalInvalid++;
+        };
+    };
+    function checkName() {
+        if (nameField.value === "") {
+            totalInvalid++;
+        };
+    };
+    function checkEmail() {
+        let emailFormat = /^\w+@\w+\.\w+$/;
+        regExTest(emailFormat, email.value);
+    };
+    function checkActivities() {
+        let checked = 0;
+        activitiesCheckboxes.forEach((e) => {
+            if (e.checked) {
+                checked++;
+            };
+            if (checked === 0) {
+                totalInvalid++;
+            };
+        });
+    };
+    function checkCreditCard() {
+        if (userPayment.value === "credit-card") {
+            let cardNumber = document.getElementById("cc-num").value;
+            let zipCode = document.getElementById("zip").value;
+            let cvv = document.getElementById("cvv").value;
+            let cardNumberRegEx = /^\d{13,16}$/;
+            let zipCodeRegEx = /^\d{5}$/;
+            let cvvRegEx = /^\d{3}$/;
+            regExTest(cardNumberRegEx, cardNumber);
+            regExTest(zipCodeRegEx, zipCode);
+            regExTest(cvvRegEx, cvv);
+        };
+    };
+    checkName();
+    checkEmail();
+    checkActivities();
+    checkCreditCard();
+    if (totalInvalid > 0) {
+        console.log("Errors");
+        e.preventDefault();
+    }
 });
