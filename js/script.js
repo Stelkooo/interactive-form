@@ -7,6 +7,24 @@ function pageLoad() {
     nameField.focus();
     otherJobRole.style.display = "none";
     colorSelect.disabled = true;
+    userPayment.value = "credit-card";
+    paymentSelection("credit-card")
+};
+
+function paymentSelection(payment) {
+    let paymentOptions = {
+        "credit-card": document.getElementById("credit-card"),
+        "paypal": document.getElementById("paypal"),
+        "bitcoin": document.getElementById("bitcoin")
+    };
+
+    Object.keys(paymentOptions).forEach((key) => {
+        if (payment === key) {
+            paymentOptions[key].hidden = false;
+        } else {
+            paymentOptions[key].hidden = true;
+        }
+    })
 };
 
 let bodyHTML = document.getElementsByTagName("body")[0];
@@ -19,6 +37,7 @@ let colorOptions = document.querySelectorAll("#color option");
 let activities = document.getElementById("activities");
 let activitiesCost = document.getElementById("activities-cost");
 let totalCost = 0;
+let userPayment = document.getElementById("payment");
 
 bodyHTML.addEventListener(
     "load",
@@ -69,4 +88,8 @@ activities.addEventListener("change", (e) => {
         totalCost -= parseInt(e.target.dataset.cost);
     }
     activitiesCost.innerHTML = `Total: $${totalCost}`;
+});
+
+userPayment.addEventListener("change", (e) => {
+    paymentSelection(e.target.value);
 });
