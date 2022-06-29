@@ -16,6 +16,9 @@ let otherJobRole = document.getElementById("other-job-role");
 let shirtDesigns = document.getElementById("design");
 let colorSelect = document.getElementById("color");
 let colorOptions = document.querySelectorAll("#color option");
+let activities = document.getElementById("activities");
+let activitiesCost = document.getElementById("activities-cost");
+let totalCost = 0;
 
 bodyHTML.addEventListener(
     "load",
@@ -57,4 +60,13 @@ shirtDesigns.addEventListener("change", () => {
             colorOptionsHide("heart js"); 
             break;
     }
+});
+
+activities.addEventListener("change", (e) => {
+    if (e.target.checked === true) {
+        totalCost += parseInt(e.target.dataset.cost);
+    } else {
+        totalCost -= parseInt(e.target.dataset.cost);
+    }
+    activitiesCost.innerHTML = `Total: $${totalCost}`;
 });
