@@ -61,7 +61,6 @@ userTitle.addEventListener("change", () => {
         otherJobRole.style.display = "none";
     }
 });
-
 /*
     listens for changes in selection of shirt designs
     depending on design selected, only colors specific to that design will display
@@ -161,4 +160,23 @@ form.addEventListener("submit", (e) => {
         console.log("Errors");
         e.preventDefault();
     }
+});
+/*
+    adds an event listener to each checkbox to listen for focus and blur
+    adds/removes the class depending on the event
+*/
+activitiesCheckboxes.forEach((checkbox) => {
+    let parentClassList = checkbox.parentElement.classList;
+    checkbox.addEventListener("focus", () => {
+        if (parentClassList.contains("blur")) {
+            parentClassList.remove("blur");
+        };
+        parentClassList.add("focus");
+    });
+    checkbox.addEventListener("blur", () => {
+        if (parentClassList.contains("focus")) {
+            parentClassList.remove("focus");
+        };
+        parentClassList.add("blur");
+    });
 });
