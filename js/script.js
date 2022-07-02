@@ -108,8 +108,8 @@ userPayment.addEventListener("change", (e) => {
 });
 /*
     when form gets submitted it checks required fields
-    if required field is not correctly filled in, it returns true and adds the not-valid class to its parent element
-    if required field is filled correctly in, it returns false and adds the valid class to its parent element
+    if required field is not correctly filled in, it returns true, adds the not-valid class to its parent element and display hint
+    if required field is filled correctly in, it returns false, adds the valid class to its parent element and hides hint
     if all checks return false it will submit the form
     otherwise if at least one returns true it will not submit the form
 */
