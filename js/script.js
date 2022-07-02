@@ -64,16 +64,20 @@ userTitle.addEventListener("change", () => {
 /*
     listens for changes in selection of shirt designs
     depending on design selected, only colors specific to that design will display
+    the first available color is selected
 */
 shirtDesigns.addEventListener("change", () => {
     function colorOptionsHide(theme) {
+        let newOptions = [];
         colorOptions.forEach((e) => {
             if (e.dataset.theme === theme) {
                 e.hidden = false;
+                newOptions.push(e);
             } else {
                 e.hidden = true;
             }
-        }) 
+        })
+        newOptions[0].selected = true;
     };
 
     colorSelect.disabled = false;
