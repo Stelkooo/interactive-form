@@ -259,6 +259,7 @@ function isCardNumberInvalid() {
     let cardNumberValidity = regExTest(cardNumberRegEx, cardNumber.value);
     if (cardNumberValidity) {
         validationStyle(cardNumber.parentElement, "not-valid");
+        cardNumber.parentElement.lastElementChild.textContent = `Credit card number must be between 13 - 16 digits, it is currently ${cardNumber.value.length} digit/s long`
     } else {
         validationStyle(cardNumber.parentElement, "valid");
     }
@@ -275,6 +276,7 @@ function isZipCodeInvalid() {
     let zipCodeValidity = regExTest(zipCodeRegEx, zipCode.value);
     if (zipCodeValidity) {
         validationStyle(zipCode.parentElement, "not-valid");
+        zipCode.parentElement.lastElementChild.textContent = `Credit card number must be between 13 - 16 digits, it is currently ${zipCode.value.length} digit/s long`
     } else {
         validationStyle(zipCode.parentElement, "valid");
     }
@@ -291,6 +293,7 @@ function isCvvInvalid() {
     let cvvValidity = regExTest(cvvRegEx, cvv.value);
     if (cvvValidity) {
         validationStyle(cvv.parentElement, "not-valid");
+        cvv.parentElement.lastElementChild.textContent = `Credit card number must be between 13 - 16 digits, it is currently ${cvv.value.length} digit/s long`
     } else {
         validationStyle(cvv.parentElement, "valid");
     }
