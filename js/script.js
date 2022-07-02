@@ -121,12 +121,15 @@ form.addEventListener("submit", (e) => {
                     element.classList.remove("not-valid");
                 }
                 element.classList.add("valid");
+                element.lastElementChild.style.display = "none";
                 break;
             case "not-valid":
                 if (element.classList.contains("valid")) {
                     element.classList.remove("valid");
                 }
                 element.classList.add("not-valid");
+                element.lastElementChild.style.display = "inline-block";
+                break;
         }
     }
     function regExTest(regEx, stringToTest) {
