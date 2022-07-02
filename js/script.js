@@ -45,6 +45,9 @@ let userPayment = document.getElementById("payment");
 let form = document.getElementsByTagName("form")[0];
 let email = document.getElementById("email");
 let activitiesCheckboxes = document.querySelectorAll('.activities input[type="checkbox"]');
+let cardNumber = document.getElementById("cc-num");
+let zipCode = document.getElementById("zip");
+let cvv = document.getElementById("cvv");
 
 bodyHTML.addEventListener(
     "load",
@@ -142,99 +145,6 @@ userPayment.addEventListener("change", (e) => {
     otherwise if at least one returns true it will not submit the form
 */
 form.addEventListener("submit", (e) => {
-    function validationStyle(element, validOrNot) {
-        switch (validOrNot) {
-            case "valid":
-                if (element.classList.contains("not-valid")) {
-                    element.classList.remove("not-valid");
-                }
-                element.classList.add("valid");
-                element.lastElementChild.style.display = "none";
-                break;
-            case "not-valid":
-                if (element.classList.contains("valid")) {
-                    element.classList.remove("valid");
-                }
-                element.classList.add("not-valid");
-                element.lastElementChild.style.display = "inline-block";
-                break;
-        }
-    }
-    function regExTest(regEx, stringToTest) {
-        if (!regEx.test(stringToTest)) {
-            console.log(regEx, stringToTest);
-            return true;
-        } else {
-            return false;
-        };
-    };
-    function isNameInvalid() {
-        if (nameField.value === "" || !regExTest(/\s+/, nameField.value)) {
-            validationStyle(nameField.parentElement, "not-valid");
-            return true;
-        } else {
-            validationStyle(nameField.parentElement, "valid");
-            return false;
-        };
-    };
-    function isEmailInvalid() {
-        let emailFormat = /^\w+@\w+\.\w+$/;
-        if (regExTest(emailFormat, email.value)) {
-            validationStyle(email.parentElement, "not-valid");
-            return true;
-        } else {
-            validationStyle(email.parentElement, "valid");
-            return false;
-        };
-    };
-    function isActivitiesInvalid() {
-        let checkedCheckboxes = 0;
-        activitiesCheckboxes.forEach((e) => {
-            if (e.checked) {
-                checkedCheckboxes++;
-            };
-        });
-        if (checkedCheckboxes === 0) {
-            validationStyle(activities, "not-valid");
-            return true;
-        } else {
-            validationStyle(activities, "valid");
-            return false;
-        };
-    };
-    function isPaymentInvalid() {
-        if (userPayment.value === "credit-card") {
-            let cardNumber = document.getElementById("cc-num");
-            let zipCode = document.getElementById("zip");
-            let cvv = document.getElementById("cvv");
-            let cardNumberRegEx = /^\d{13,16}$/;
-            let zipCodeRegEx = /^\d{5}$/;
-            let cvvRegEx = /^\d{3}$/;
-            let cardNumberValidity = regExTest(cardNumberRegEx, cardNumber.value);
-            let zipCodeValidity = regExTest(zipCodeRegEx, zipCode.value);
-            let cvvValidity = regExTest(cvvRegEx, cvv.value);
-            if (cardNumberValidity) {
-                validationStyle(cardNumber.parentElement, "not-valid");
-            } else {
-                validationStyle(cardNumber.parentElement, "valid");
-            }
-            if (zipCodeValidity) {
-                validationStyle(zipCode.parentElement, "not-valid");
-            } else {
-                validationStyle(zipCode.parentElement, "valid");
-            }
-            if (cvvValidity) {
-                validationStyle(cvv.parentElement, "not-valid");
-            } else {
-                validationStyle(cvv.parentElement, "valid");
-            }
-            return (cardNumberValidity ||
-            zipCodeValidity ||
-            cvvValidity);
-        } else {
-            return false;
-        };
-    };
     let nameValidity = isNameInvalid();
     let emailValidity = isEmailInvalid();
     let activitiesValidity = isActivitiesInvalid();
@@ -243,6 +153,152 @@ form.addEventListener("submit", (e) => {
         e.preventDefault();
     }
 });
+/*
+    takes in a element and where it is valid or not
+    depending on the validity it will add/remove a class and show/hide the hint
+*/
+function validationStyle(element, validOrNot) {
+    switch (validOrNot) {
+        case "valid":
+            if (element.classList.contains("not-valid")) {
+                element.classList.remove("not-valid");
+            }
+            element.classList.add("valid");
+            element.lastElementChild.style.display = "none";
+            break;
+        case "not-valid":
+            if (element.classList.contains("valid")) {
+                element.classList.remove("valid");
+            }
+            element.classList.add("not-valid");
+            element.lastElementChild.style.display = "inline-block";
+            break;
+    }
+}
+/*
+    takes in a regex and a string
+    runs a test
+    if it passes it return false, if it fails it return true
+*/
+function regExTest(regEx, stringToTest) {
+    if (!regEx.test(stringToTest)) {
+        return true;
+    } else {
+        return false;
+    };
+};
+/*
+    checks if the name field is valid
+*/
+function isNameInvalid() {
+    if (nameField.value === "" || !regExTest(/\s+/, nameField.value)) {
+        validationStyle(nameField.parentElement, "not-valid");
+        return true;
+    } else {
+        validationStyle(nameField.parentElement, "valid");
+        return false;
+    };
+};
+/*
+    checks the validity of the name field in real time
+*/
+nameField.addEventListener("keyup", isNameInvalid);
+/*
+    checks if the email field is valid
+*/
+
+function isEmailInvalid() {
+    let emailFormat = /^\w+@\w+\.\w+$/;
+    if (regExTest(emailFormat, email.value)) {
+        validationStyle(email.parentElement, "not-valid");
+        return true;
+    } else {
+        validationStyle(email.parentElement, "valid");
+        return false;
+    };
+};
+/*
+    checks the validity of the email field in real time
+*/
+email.addEventListener("keyup", isEmailInvalid);
+/*
+    checks to see if the activities has been filled in correctly
+*/
+function isActivitiesInvalid() {
+    let checkedCheckboxes = 0;
+    activitiesCheckboxes.forEach((e) => {
+        if (e.checked) {
+            checkedCheckboxes++;
+        };
+    });
+    if (checkedCheckboxes === 0) {
+        validationStyle(activities, "not-valid");
+        return true;
+    } else {
+        validationStyle(activities, "valid");
+        return false;
+    };
+};
+/*
+    checks to see if the credit card payment has been filled in correctly
+*/
+function isPaymentInvalid() {
+    if (userPayment.value === "credit-card") {
+        return (isCardNumberInvalid() ||
+        isZipCodeInvalid() ||
+        isCvvInvalid());
+    } else {
+        return false;
+    };
+};
+/*
+    checks to see if the credit card number has been filled in correctly
+*/
+function isCardNumberInvalid() {
+    let cardNumberRegEx = /^\d{13,16}$/;
+    let cardNumberValidity = regExTest(cardNumberRegEx, cardNumber.value);
+    if (cardNumberValidity) {
+        validationStyle(cardNumber.parentElement, "not-valid");
+    } else {
+        validationStyle(cardNumber.parentElement, "valid");
+    }
+}
+/*
+    checks the validity of the email field in real time
+*/
+cardNumber.addEventListener("keyup", isCardNumberInvalid);
+/*
+    checks to see if the zip code has been filled in correctly
+*/
+function isZipCodeInvalid() {
+    let zipCodeRegEx = /^\d{5}$/;
+    let zipCodeValidity = regExTest(zipCodeRegEx, zipCode.value);
+    if (zipCodeValidity) {
+        validationStyle(zipCode.parentElement, "not-valid");
+    } else {
+        validationStyle(zipCode.parentElement, "valid");
+    }
+}
+/*
+    checks the validity of the zip code field in real time
+*/
+zipCode.addEventListener("keyup", isZipCodeInvalid);
+/*
+    checks to see if the cvv number has been filled in correctly
+*/
+function isCvvInvalid() {
+    let cvvRegEx = /^\d{3}$/;
+    let cvvValidity = regExTest(cvvRegEx, cvv.value);
+    if (cvvValidity) {
+        validationStyle(cvv.parentElement, "not-valid");
+    } else {
+        validationStyle(cvv.parentElement, "valid");
+    }
+}
+/*
+    checks the validity of the cvv field in real time
+*/
+cvv.addEventListener("keyup", isCvvInvalid);
 /*
     adds an event listener to each checkbox to listen for focus and blur
     adds/removes the class depending on the event
