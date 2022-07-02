@@ -96,10 +96,34 @@ shirtDesigns.addEventListener("change", () => {
     if a checkbox is unselected, its cost is removed
 */
 activities.addEventListener("change", (e) => {
+    function conflictingActivities(isChecked) {
+        activitiesCheckboxes.forEach((checkbox) => {
+            let doesTargetHaveAttribute = e.target.hasAttribute("data-day-and-time");
+            let doesCheckboxHaveAttribute = checkbox.hasAttribute("data-day-and-time");
+            if (doesTargetHaveAttribute && doesCheckboxHaveAttribute) {
+                let targetDataValue = e.target.getAttribute("data-day-and-time");
+                let checkboxDataValue = checkbox.getAttribute("data-day-and-time");
+                if (targetDataValue === checkboxDataValue && e.target !== checkbox) {
+                    switch (isChecked) {
+                        case true:
+                            checkbox.parentElement.classList.add("disabled");
+                            break;      
+                        case false:
+                            checkbox.parentElement.classList.remove("disabled");
+                            break;
+                    }
+                    
+                }
+            }
+        })
+    }
+
     if (e.target.checked === true) {
         totalCost += parseInt(e.target.dataset.cost);
+        conflictingActivities(true);
     } else {
         totalCost -= parseInt(e.target.dataset.cost);
+        conflictingActivities(false);
     }
     activitiesCost.innerHTML = `Total: $${totalCost}`;
 });
