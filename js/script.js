@@ -192,9 +192,9 @@ form.addEventListener("submit", (e) => {
                 validationStyle(zipCode.parentElement, "valid");
             }
             if (cvvValidity) {
-                validationStyle(cvv.parentElement.parentElement, "not-valid");
+                validationStyle(cvv.parentElement, "not-valid");
             } else {
-                validationStyle(cvv.parentElement.parentElement, "valid");
+                validationStyle(cvv.parentElement, "valid");
             }
             return (cardNumberValidity ||
             zipCodeValidity ||
