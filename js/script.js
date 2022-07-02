@@ -108,11 +108,27 @@ userPayment.addEventListener("change", (e) => {
 });
 /*
     when form gets submitted it checks required fields
-    if required field is not correctly filled in, it returns true
+    if required field is not correctly filled in, it returns true and adds the not-valid class to its parent element
+    if required field is filled correctly in, it returns false and adds the valid class to its parent element
     if all checks return false it will submit the form
     otherwise if at least one returns true it will not submit the form
 */
 form.addEventListener("submit", (e) => {
+    function validationStyle(element, validOrNot) {
+        switch (validOrNot) {
+            case "valid":
+                if (element.classList.contains("not-valid")) {
+                    element.classList.remove("not-valid");
+                }
+                element.classList.add("valid");
+                break;
+            case "not-valid":
+                if (element.classList.contains("valid")) {
+                    element.classList.remove("valid");
+                }
+                element.classList.add("not-valid");
+        }
+    }
     function regExTest(regEx, stringToTest) {
         if (!regEx.test(stringToTest)) {
             return true;
@@ -122,14 +138,22 @@ form.addEventListener("submit", (e) => {
     };
     function isNameInvalid() {
         if (nameField.value === "") {
+            validationStyle(nameField.parentElement, "not-valid");
             return true;
         } else {
+            validationStyle(nameField.parentElement, "valid");
             return false;
         };
     };
     function isEmailInvalid() {
         let emailFormat = /^\w+@\w+\.\w+$/;
-        return regExTest(emailFormat, email.value);
+        if (regExTest(emailFormat, email.value)) {
+            validationStyle(email.parentElement, "not-valid");
+            return true;
+        } else {
+            validationStyle(email.parentElement, "valid");
+            return false;
+        };
     };
     function isActivitiesInvalid() {
         let checkedCheckboxes = 0;
@@ -139,28 +163,51 @@ form.addEventListener("submit", (e) => {
             };
         });
         if (checkedCheckboxes === 0) {
+            validationStyle(activities, "not-valid");
             return true;
         } else {
+            validationStyle(activities, "valid");
             return false;
         };
     };
     function isPaymentInvalid() {
         if (userPayment.value === "credit-card") {
-            let cardNumber = document.getElementById("cc-num").value;
-            let zipCode = document.getElementById("zip").value;
-            let cvv = document.getElementById("cvv").value;
+            let cardNumber = document.getElementById("cc-num");
+            let zipCode = document.getElementById("zip");
+            let cvv = document.getElementById("cvv");
             let cardNumberRegEx = /^\d{13,16}$/;
             let zipCodeRegEx = /^\d{5}$/;
             let cvvRegEx = /^\d{3}$/;
-            return (regExTest(cardNumberRegEx, cardNumber) ||
-            regExTest(zipCodeRegEx, zipCode) ||
-            regExTest(cvvRegEx, cvv));
+            let cardNumberValidity = regExTest(cardNumberRegEx, cardNumber.value);
+            let zipCodeValidity = regExTest(zipCodeRegEx, zipCode.value);
+            let cvvValidity = regExTest(cvvRegEx, cvv.value);
+            if (cardNumberValidity) {
+                validationStyle(cardNumber.parentElement, "not-valid");
+            } else {
+                validationStyle(cardNumber.parentElement, "valid");
+            }
+            if (zipCodeValidity) {
+                validationStyle(zipCode.parentElement, "not-valid");
+            } else {
+                validationStyle(zipCode.parentElement, "valid");
+            }
+            if (cvvValidity) {
+                validationStyle(cvv.parentElement.parentElement, "not-valid");
+            } else {
+                validationStyle(cvv.parentElement.parentElement, "valid");
+            }
+            return (cardNumberValidity ||
+            zipCodeValidity ||
+            cvvValidity);
         } else {
             return false;
         };
     };
-    if (isNameInvalid() || isEmailInvalid() || isActivitiesInvalid() || isPaymentInvalid()) {
-        console.log("Errors");
+    let nameValidity = isNameInvalid();
+    let emailValidity = isEmailInvalid();
+    let activitiesValidity = isActivitiesInvalid();
+    let paymentValidity = isPaymentInvalid();
+    if (nameValidity || emailValidity || activitiesValidity || paymentValidity) {
         e.preventDefault();
     }
 });
