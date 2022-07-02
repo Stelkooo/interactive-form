@@ -138,13 +138,14 @@ form.addEventListener("submit", (e) => {
     }
     function regExTest(regEx, stringToTest) {
         if (!regEx.test(stringToTest)) {
+            console.log(regEx, stringToTest);
             return true;
         } else {
             return false;
         };
     };
     function isNameInvalid() {
-        if (nameField.value === "") {
+        if (nameField.value === "" || !regExTest(/\s+/, nameField.value)) {
             validationStyle(nameField.parentElement, "not-valid");
             return true;
         } else {
