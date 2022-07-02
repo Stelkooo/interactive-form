@@ -108,38 +108,43 @@ userPayment.addEventListener("change", (e) => {
 });
 /*
     when form gets submitted it checks required fields
-    if required field is not correctly filled in, it add 1 to totalInvalid
-    if totalInvalid is eq to 0 at the end of checks it will submit the form
-    otherwise if totalInvalid is greater than 0 it will not submit the form
+    if required field is not correctly filled in, it returns true
+    if all checks return false it will submit the form
+    otherwise if at least one returns true it will not submit the form
 */
 form.addEventListener("submit", (e) => {
-    let totalInvalid = 0;
     function regExTest(regEx, stringToTest) {
-        if (!regEx.text(stringToTest)) {
-            totalInvalid++;
+        if (!regEx.test(stringToTest)) {
+            return true;
+        } else {
+            return false;
         };
     };
-    function checkName() {
+    function isNameInvalid() {
         if (nameField.value === "") {
-            totalInvalid++;
+            return true;
+        } else {
+            return false;
         };
     };
-    function checkEmail() {
+    function isEmailInvalid() {
         let emailFormat = /^\w+@\w+\.\w+$/;
-        regExTest(emailFormat, email.value);
+        return regExTest(emailFormat, email.value);
     };
-    function checkActivities() {
-        let checked = 0;
+    function isActivitiesInvalid() {
+        let checkedCheckboxes = 0;
         activitiesCheckboxes.forEach((e) => {
             if (e.checked) {
-                checked++;
-            };
-            if (checked === 0) {
-                totalInvalid++;
+                checkedCheckboxes++;
             };
         });
+        if (checkedCheckboxes === 0) {
+            return true;
+        } else {
+            return false;
+        };
     };
-    function checkCreditCard() {
+    function isPaymentInvalid() {
         if (userPayment.value === "credit-card") {
             let cardNumber = document.getElementById("cc-num").value;
             let zipCode = document.getElementById("zip").value;
@@ -147,16 +152,14 @@ form.addEventListener("submit", (e) => {
             let cardNumberRegEx = /^\d{13,16}$/;
             let zipCodeRegEx = /^\d{5}$/;
             let cvvRegEx = /^\d{3}$/;
-            regExTest(cardNumberRegEx, cardNumber);
-            regExTest(zipCodeRegEx, zipCode);
-            regExTest(cvvRegEx, cvv);
+            return (regExTest(cardNumberRegEx, cardNumber) ||
+            regExTest(zipCodeRegEx, zipCode) ||
+            regExTest(cvvRegEx, cvv));
+        } else {
+            return false;
         };
     };
-    checkName();
-    checkEmail();
-    checkActivities();
-    checkCreditCard();
-    if (totalInvalid > 0) {
+    if (isNameInvalid() || isEmailInvalid() || isActivitiesInvalid() || isPaymentInvalid()) {
         console.log("Errors");
         e.preventDefault();
     }
