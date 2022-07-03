@@ -110,9 +110,11 @@ activities.addEventListener("change", (e) => {
                     switch (isChecked) {
                         case true:
                             checkbox.parentElement.classList.add("disabled");
+                            checkbox.disabled = true;
                             break;      
                         case false:
                             checkbox.parentElement.classList.remove("disabled");
+                            checkbox.disabled = false;
                             break;
                     }
                     
