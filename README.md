@@ -44,7 +44,7 @@ To further enhance the interactivity of this form, real time input validation is
 
 ## Contact
 
-Your Name - [Stilyan Toskov](https://linkedin.com/in/stilyan-toskov) - stilyanmtoskov@gmail.com
+[Stilyan Toskov](https://linkedin.com/in/stilyan-toskov) - stilyanmtoskov@gmail.com
 
 Project Link: [https://github.com/Stelkooo/interactive-form](https://github.com/Stelkooo/interactive-form)
 
